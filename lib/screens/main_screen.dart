@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_mate/screens/create_post_screen.dart'; // Import your create post screen
+import 'package:travel_mate/screens/profile_screen.dart';
 import 'feed_tab.dart'; // We will create this next
 
 class MainScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     const Center(child: Text("Explore Map")), // 1: Explore (Placeholder)
     const Center(child: Text("Add Post")),    // 2: Placeholder (Handled by button)
     const Center(child: Text("Leaderboard")), // 3: Leaderboard (Placeholder)
-    const Center(child: Text("Profile")),     // 4: Profile (Placeholder)
+    const ProfileScreen(),     // 4: Profile (Placeholder)
   ];
 
   void _onTabTapped(int index) {
