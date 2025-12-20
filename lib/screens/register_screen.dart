@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_mate/screens/visited_districts_screen.dart';
+import 'package:travel_mate/screens/login_screen.dart'; // Make sure to import your Login Screen here
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -53,8 +54,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     // Validate Home District against list (Optional, but good for UI consistency)
-    // For now, we accept whatever they type, but clean it up
-    String formattedHomeDistrict = homeDistrict[0].toUpperCase() + homeDistrict.substring(1).toLowerCase();
+    String formattedHomeDistrict = homeDistrict.isNotEmpty
+        ? homeDistrict[0].toUpperCase() + homeDistrict.substring(1).toLowerCase()
+        : homeDistrict;
 
     setState(() {
       _isLoading = true;
@@ -72,18 +74,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (user != null) {
         // 3. Create Firestore Document
-        // Note: We initialize 'visited_district' as an empty list here.
-        // It will be filled in the NEXT screen.
         await _firestore.collection('users').doc(user.uid).set({
           'name': fullName,
           'email': email,
           'home_district': formattedHomeDistrict,
           'profile_pic': 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
           'bio': 'New to TravelMate!',
-          'user_rating': 5, // Matches your screenshot
-          'followers': [], // Empty Array
-          'following': [], // Empty Array
-          'visited_district': [], // Placeholder, will be updated next step
+          'user_rating': 0.0,
+          'followers': [],
+          'following': [],
+          'visited_district': [],
           'createdAt': FieldValue.serverTimestamp(),
         });
 
@@ -145,6 +145,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       : const Text("Register & Continue"),
                 ),
               ),
+
+              const SizedBox(height: 20),
+
+              // --- ADDED SIGN IN ROW HERE ---
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Already have an account? "),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to Login Screen
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    child: const Text(
+                      "Sign In",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // ------------------------------
             ],
           ),
         ),

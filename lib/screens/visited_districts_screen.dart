@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travel_mate/screens/profile_picture_screen.dart';
 
 import 'feed_screen.dart';
 
@@ -74,7 +75,7 @@ class _VisitedDistrictsScreenState extends State<VisitedDistrictsScreen> {
           // Navigate to main app
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const FeedPage()),
+            MaterialPageRoute(builder: (context) => const ProfilePictureScreen()),
           );
         }
       }
