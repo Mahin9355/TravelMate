@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_mate/screens/feed_screen.dart';
+import 'package:travel_mate/screens/register_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/main_screen.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         useMaterial3: true,
       ),
-      home: const FeedPage(),
+      home: const RegisterScreen(),
     );
   }
 }
@@ -42,7 +43,7 @@ class AuthWrapper extends StatelessWidget {
           );
         }
         if (snapshot.hasData) {
-          return const MainScreen();
+          return const FeedPage();
         }
         return const LoginScreen();
       },
