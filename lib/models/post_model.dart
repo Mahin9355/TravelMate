@@ -2,39 +2,67 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
   final String postId;
-  final String authorId; // The vital link to the UserModel
+  final String userId;
+  final String locationId;
+  final String locationName;
   final String caption;
-  final List<String> imageUrls; // Corresponds to {image_list} in ER
-  final DateTime timestamp;
-  // We denormalize counts for easy UI access
+  final List<String> imageUrls;
+  final List<String> tagList;
   final int likesCount;
   final int commentsCount;
   final int sharesCount;
+  final DateTime timestamp;
+  // NEW: To track if the current user liked this post
+  final bool isLikedByCurrentUser;
 
   PostModel({
     required this.postId,
-    required this.authorId,
+    required this.userId,
+    required this.locationId,
+    required this.locationName,
     required this.caption,
     required this.imageUrls,
+    required this.tagList,
+    this.likesCount = 0,
+    this.commentsCount = 0,
+    this.sharesCount = 0,
     required this.timestamp,
-    required this.likesCount,
-    required this.commentsCount,
-    required this.sharesCount,
+    // Initialize with false, will be set by service
+    this.isLikedByCurrentUser = false,
   });
 
   factory PostModel.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    Map data = doc.data() as Map<String, dynamic>;
     return PostModel(
       postId: doc.id,
-      authorId: data['authorId'] ?? '',
+      userId: data['user_id'] ?? '',
+      locationId: data['location_id'] ?? '',
+      locationName: data['location_name'] ?? '',
       caption: data['caption'] ?? '',
-      // Safely convert dynamic list to string list
       imageUrls: List<String>.from(data['image_list'] ?? []),
-      // Handle Firestore Timestamp conversion
-      timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      likesCount: data['likesCount'] ?? 0,
-      commentsCount: data['commentsCount'] ?? 0,
-      sharesCount: data['sharesCount'] ?? 0,
+      tagList: List<String>.from(data['tag_list'] ?? []),
+      likesCount: data['likes_count'] ?? 0,
+      commentsCount: data['comments_count'] ?? 0,
+      sharesCount: data['shares_count'] ?? 0,
+      timestamp: (data['timestamp'] as Timestamp).toDate(),
+    );
+  }
+
+  // Helper to create a copy of the post with an updated like state
+  PostModel copyWith({bool? isLikedByCurrentUser, int? likesCount}) {
+    return PostModel(
+      postId: postId,
+      userId: userId,
+      locationId: locationId,
+      locationName: locationName,
+      caption: caption,
+      imageUrls: imageUrls,
+      tagList: tagList,
+      likesCount: likesCount ?? this.likesCount,
+      commentsCount: commentsCount,
+      sharesCount: sharesCount,
+      timestamp: timestamp,
+      isLikedByCurrentUser: isLikedByCurrentUser ?? this.isLikedByCurrentUser,
     );
   }
 }

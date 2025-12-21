@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         useMaterial3: true,
       ),
-      home: const RegisterScreen(),
+      home: const AuthWrapper(),
     );
   }
 }
@@ -43,7 +43,7 @@ class AuthWrapper extends StatelessWidget {
           );
         }
         if (snapshot.hasData) {
-          return const FeedPage();
+          return const MainScreen();
         }
         return const LoginScreen();
       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travel_mate/screens/create_post_screen.dart'; // Import your create post screen
+import 'package:travel_mate/screens/add_post_screen.dart'; // Import your create post screen
+import 'package:travel_mate/screens/feed_screen.dart';
 import 'package:travel_mate/screens/profile_screen.dart';
 import 'feed_tab.dart'; // We will create this next
 
@@ -15,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   // List of tabs
   final List<Widget> _pages = [
-    const FeedTab(),              // 0: Home
+    const FeedPage(),              // 0: Home
     const Center(child: Text("Explore Map")), // 1: Explore (Placeholder)
     const Center(child: Text("Add Post")),    // 2: Placeholder (Handled by button)
     const Center(child: Text("Leaderboard")), // 3: Leaderboard (Placeholder)
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
       // If "Add Post" is tapped, open the CreatePostScreen as a full page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const CreatePostScreen()),
+        MaterialPageRoute(builder: (context) => const AddPostScreen()),
       );
     } else {
       setState(() {
